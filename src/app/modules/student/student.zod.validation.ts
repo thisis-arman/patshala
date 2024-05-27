@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-// Define individual schemas for nested objects
-
 const userNameSchema = z.object({
   firstName: z
     .string()
