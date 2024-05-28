@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TUser } from "./user.interface";
-import { string } from "zod";
+
 
 
 export const userSchema = new Schema<TUser>({
