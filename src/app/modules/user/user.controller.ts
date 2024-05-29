@@ -1,15 +1,15 @@
 import { TStudent } from './../student/student.interface';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "./user.modal";
 import { UserServices } from "./user.service";
 
 
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (req: Request, res: Response,next:NextFunction) => {
     try {
 
-        const {password,student} = req.body;
-        const result = await UserServices.createStudentInfoDB(password,student);
+        const {password,studentData} = req.body;
+        const result = await UserServices.createStudentInfoDB(password,studentData);
          res.status(200).json({
             success: true,
              message: "Student created successfully",
@@ -17,11 +17,7 @@ const createStudent = async (req: Request, res: Response) => {
         })
         
     } catch (error :any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "something went wrong",
-            error: error
-        })
+        next(error)
     }
 }
 
