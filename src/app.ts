@@ -4,6 +4,7 @@ import cors from 'cors'
 const app: Application = express()
 import bodyParser from 'body-parser'
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler'
+import { notFound } from './app/middlewares/notFound'
 const port = 3000
 
 
@@ -17,6 +18,7 @@ app.use('/api/v1/users', UserRoutes)
 
 
 app.use(globalErrorHandler)
+app.use(notFound)
 
 
 

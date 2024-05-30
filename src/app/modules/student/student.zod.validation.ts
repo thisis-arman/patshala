@@ -42,7 +42,7 @@ const localGuardianSchema = z.object({
   address: z.string().trim().nonempty("Address is required"),
 });
 
-const studentSchema = z
+const createValidationSchema = z
   .object({
     id: z.string().nonempty("Id is required"),
     user: z.string().nonempty("User Id is required"),
@@ -73,4 +73,6 @@ const studentSchema = z
   })
   .strict();
 
-export default studentSchema;
+export const studentValidations = {
+  createValidationSchema
+};
