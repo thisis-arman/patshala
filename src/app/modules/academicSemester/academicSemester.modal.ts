@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { TAcademicSemester } from "./academicSemester.interface";
 
 const createAcademicSemesterSchema = new Schema<TAcademicSemester>({
@@ -63,3 +63,6 @@ const createAcademicSemesterSchema = new Schema<TAcademicSemester>({
 export const academicSemestersValidation = {
     createAcademicSemesterSchema,
 }
+
+
+export const AcademicSemester = model<TAcademicSemester>("AcademicSemester",createAcademicSemesterSchema)
