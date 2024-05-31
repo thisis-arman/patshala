@@ -59,10 +59,23 @@ const createAcademicSemesterSchema = new Schema<TAcademicSemester>({
     }
 );
 
+createAcademicSemesterSchema.pre("save",async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    year: this.year,
+  name: this.name
+  })
+
+  if (isSemesterExists) {
+    throw new Error("")
+  }
+})
+
 
 export const academicSemestersValidation = {
     createAcademicSemesterSchema,
 }
+
+
 
 
 export const AcademicSemester = model<TAcademicSemester>("AcademicSemester",createAcademicSemesterSchema)

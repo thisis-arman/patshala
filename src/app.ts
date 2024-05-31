@@ -5,6 +5,7 @@ const app: Application = express()
 import bodyParser from 'body-parser'
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler'
 import { notFound } from './app/middlewares/notFound'
+import router from './app/route'
 const port = 3000
 
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json());
 app.use(express.json())
 app.use(cors())
 
-app.use('/api/v1/users', UserRoutes)
+app.use('/api/v1', router)
 
 
 app.use(globalErrorHandler)
