@@ -1,7 +1,7 @@
 import { UserControllers } from "./user.controller";
 import express from "express";
 import { studentValidations } from "../student/student.zod.validation";
-import validateRequest from "../../utils/validateRequest";
+import validateRequest from "../../middlewares/validateRequest";
 
 const router = express.Router();
 

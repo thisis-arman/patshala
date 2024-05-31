@@ -10,7 +10,7 @@ const createStudentInfoDB = async (password: string, studentData: TStudent) => {
   userData.role = "student",
   userData.password = password || (config.default_password as string);
   
-    userData.id = "2030100003";
+    userData.id = "20301000010";
     userData.status='in-progress'
     const newUser = await User.create(userData);
     console.log({newUser})

@@ -42,37 +42,31 @@ const localGuardianSchema = z.object({
   address: z.string().trim().nonempty("Address is required"),
 });
 
-const createValidationSchema = z
-  .object({
-    id: z.string().nonempty("Id is required"),
-    user: z.string().nonempty("User Id is required"),
-    password: z.string().nonempty("Password is required"),
-    name: userNameSchema,
-    gender: z.enum(["Male", "Female", "Other"], {
-      required_error: "Gender is required",
+const createValidationSchema = z.object({
+  body: z.object({
+    password: z.string(),
+    studentData: z.object({
+      name: userNameSchema,
+      gender: z.enum(["Male", "Female", "Other"], {
+        required_error: "Gender is required",
+      }),
+      dateOfBirth: z.string().optional(),
+      email: z.string().email("Invalid email address"),
+      contactNo: z.string().trim(),
+      emergencyContactNo: z.string().trim(),
+      bloodGroup: z
+        .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
+        .optional(),
+      presentAddress: z.string(),
+      permanentAddress: z.string(),
+      guardian: guardianSchema,
+      localGuardian: localGuardianSchema,
+      profileImg: z.string().optional(),
+      isDeleted: z.boolean().default(false),
     }),
-    dateOfBirth: z.date().optional(),
-    email: z
-      .string()
-      .email("Invalid email address")
-      .nonempty("Email is required"),
-    contactNo: z.string().trim().nonempty("Contact No is required"),
-    emergencyContactNo: z
-      .string()
-      .trim()
-      .nonempty("Emergency Contact No is required"),
-    bloodGroup: z
-      .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
-      .optional(),
-    presentAddress: z.string().nonempty("Present Address is required"),
-    permanentAddress: z.string().nonempty("Permanent Address is required"),
-    guardian: guardianSchema,
-    localGuardian: localGuardianSchema,
-    profileImg: z.string().optional(),
-    isDeleted: z.boolean().default(false),
-  })
-  .strict();
+  }),
+});
 
 export const studentValidations = {
-  createValidationSchema
+  createValidationSchema,
 };
