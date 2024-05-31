@@ -2,33 +2,34 @@ import { TStudent } from "./student.interface";
 import { Student } from "./student.modal"
 
 
-const getAllStudents = async () => {
+const getAllStudentsFromDB = async () => {
     const result = await Student.find({});
     return result;
 }
 
-const getSingleStudent = async (_id :string) => {
+const getSingleStudentFromDB = async (_id :string) => {
     const result = await Student.findOne({_id});
     return result;
 }
 
 
-const updateStudent = async (_id :string,payload:Partial<TStudent>) => {
+const updateStudentIntoDB = async (_id :string,payload:Partial<TStudent>) => {
     const result = await Student.findByIdAndUpdate({_id},{payload});
     return result;
 }
 
 
-const deleteSingleStudent = async (_id) => {
+const deleteSingleStudentIntoDB = async (_id :string) => {
 
-    const result = await Student.
+    const result = await Student.findByIdAndUpdate({ _id }, { isDeleted: true })
+    return result;
     
 }
 
 
 export const studentServices = {
-  getAllStudents,
-  updateStudent,
-  getSingleStudent,
-  deleteSingleStudent,
+  getAllStudentsFromDB,
+  updateStudentIntoDB,
+  getSingleStudentFromDB,
+  deleteSingleStudentIntoDB,
 };
