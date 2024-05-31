@@ -5,6 +5,7 @@ const createAcademicSemesterSchema = new Schema<TAcademicSemester>(
   {
     name: {
       type: String,
+      enum:["Autumn","Summer","Fall"],
       required: [true, "Semester Name is required"],
     },
     year: {
