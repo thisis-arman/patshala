@@ -141,6 +141,7 @@ const studentSchema = new Schema<TStudent,StudentModel>(
     },
     guardian: guardianSchema,
     localGuardian: localGuardianSchema,
+    admissionSemester:Schema.Types.ObjectId,
     profileImg: {
       type: String,
     },
