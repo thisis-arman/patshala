@@ -18,11 +18,11 @@ const getSingleAcademicFacultyFromDB = async (_id:string) => {
 }
 
 const updateAcademicFacultyFromDB = async (_id:string,payload:TAcademicFaculty) => {
-    const result = await AcademicFaculty.findByIdAndUpdate({_id}{payload});
+    const result = await AcademicFaculty.findByIdAndUpdate({_id},{payload});
     return result;
 }
-const deleteAcademicFacultyFromDB = async (_id:string,payload:TAcademicFaculty) => {
-    const result = await AcademicFaculty.findByIdAndUpdate({_id},{payload});
+const deleteAcademicFacultyFromDB = async (_id:string) => {
+    const result = await AcademicFaculty.findByIdAndUpdate({_id},{isDeleted:true});
     return result;
 }
 
@@ -33,5 +33,6 @@ export const academicFacultyServices = {
     getAcademicFacultiesFromDB,
     getSingleAcademicFacultyFromDB,
     updateAcademicFacultyFromDB,
+    deleteAcademicFacultyFromDB
 
 }
