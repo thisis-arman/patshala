@@ -6,8 +6,15 @@ const createAcademicFacultySchema = new Schema<TAcademicFaculty>({
     type: String,
     required: [true, "Faculty Name must be String"],
     unique: true,
-  },
-});
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    }
+}, {
+    timestamps: true,
+}
+);
 
 
 export const academicFacultySchemas = {
