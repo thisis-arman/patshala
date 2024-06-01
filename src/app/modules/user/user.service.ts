@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import config from "../../config";
 import { AcademicSemester } from "../academicSemester/academicSemester.modal";
 import { TStudent } from "../student/student.interface";
@@ -21,7 +22,7 @@ const createStudentInfoDB = async (password: string, payload: TStudent) => {
   );
 
   //set  generated id
-  userData.id = await generateStudentId(admissionSemester);
+  userData.id = await generateStudentId(admissionSemester) ;
   const newUser = await User.create(userData);
   console.log({ newUser });
 
