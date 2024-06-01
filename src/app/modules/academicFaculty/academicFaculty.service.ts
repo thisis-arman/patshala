@@ -22,7 +22,7 @@ const updateAcademicFacultyFromDB = async (_id:string,payload:TAcademicFaculty) 
     return result;
 }
 const deleteAcademicFacultyFromDB = async (_id:string,payload:TAcademicFaculty) => {
-    const result = await AcademicFaculty.findByIdAndUpdate({_id}{payload});
+    const result = await AcademicFaculty.findByIdAndUpdate({_id},{payload});
     return result;
 }
 
