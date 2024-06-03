@@ -10,7 +10,11 @@ const createAcademicDepartmentSchema = new Schema<TAcademicDepartment>({
   academicFaculty: {
     type: Schema.Types.ObjectId,
     required: [true, "Faculty is required"],
-  },
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+  }
 });
 
 export const academicDepartmentSchemas = {

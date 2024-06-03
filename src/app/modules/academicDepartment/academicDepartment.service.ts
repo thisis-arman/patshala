@@ -1,27 +1,42 @@
 import TAcademicDepartment from "./academicDepartment.interface";
 import { AcademicDepartment } from "./academicDepartment.model";
 
-const createAcademicDepartment = async (payload: TAcademicDepartment) => {
+const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
   const result = await AcademicDepartment.create(payload);
   return result;
 };
 
 
-const getAllAcademicDepartments = async () => {
+const getAllAcademicDepartmentsFromDB = async () => {
   const result = await AcademicDepartment.find({});
   return result;
 };
 
-const getSingleAcademicDepartment = async (_id: TAcademicDepartment) => {
+const getSingleAcademicDepartmentFromDB = async (_id: TAcademicDepartment) => {
     const result = await AcademicDepartment.findOne({ _id });
     return result;
 }
 
-const updateAcademicDepartment = async (_id:string,payload: Partial<TAcademicDepartment>) => {
+const updateAcademicDepartmentIntoDB = async (_id:string,payload: Partial<TAcademicDepartment>) => {
   const result = await AcademicDepartment.findOne({ _id },{payload});
   return result;
 };
 
-const deletedAcademicDepartment = async () => {
+const deletedAcademicDepartmentFromDB = async (_id: string) => {
+    
+    const result = await AcademicDepartment.findByIdAndUpdate({ _id }, {
+        isDeleted: true
+    })
+    return result;
     
 }
+
+
+
+export const academicDepartmentServices = {
+  createAcademicDepartmentIntoDB,
+  getAllAcademicDepartmentsFromDB,
+  getSingleAcademicDepartmentFromDB,
+  updateAcademicDepartmentIntoDB,
+  deletedAcademicDepartmentFromDB,
+};
