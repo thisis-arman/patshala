@@ -1,5 +1,8 @@
+import mongoose from "mongoose";
 import { TStudent } from "./student.interface";
 import { Student } from "./student.modal";
+import httpStatus from "http-status";
+import { User } from "../user/user.modal";
 
 const getAllStudentsFromDB = async () => {
   const result = await Student.find({});
@@ -38,9 +41,47 @@ const updateStudentIntoDB = async (_id: string, payload: Partial<TStudent>) => {
   return result;
 };
 
-const deleteSingleStudentIntoDB = async (_id: string) => {
-  const result = await Student.findByIdAndUpdate({ _id }, { isDeleted: true });
-  return result;
+const deleteSingleStudentIntoDB = async (id: string) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const deletedStudent = await Student.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      {
+        new: true,
+        session,
+      }
+      );
+      
+      if (!deletedStudent) {
+          throw new AppError(httpStatus.BAD_REQUEST,"Student Deletion failed");
+      }
+
+      const deletedUser = await User.findOneAndUpdate({
+          id,
+      }, {
+          isDeleted: true
+      }, {
+          new: true,session
+      })
+
+      if (!deletedUser) { 
+             throw new AppError(
+               httpStatus.BAD_REQUEST,
+               "Student Deletion failed"
+             );
+      }
+      session.commitTransaction();
+      session.endSession()
+
+    return deletedStudent;
+  } catch (error) {
+      session.abortTransaction();
+      session.endSession();
+       throw new AppError(httpStatus.BAD_REQUEST, "Student Deletion failed");
+  }
 };
 
 export const studentServices = {
