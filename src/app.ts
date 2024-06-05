@@ -10,6 +10,7 @@ import router from './app/route'
 const port = 3000
 
 
+
 app.use(bodyParser.json());
 
 
@@ -18,6 +19,7 @@ app.use(cors())
 
 app.use('/api/v1', router)
 // app.use('/api/v1/academic-semester', AcademicSemesterRoute)
+
 
 
 app.use(globalErrorHandler)
