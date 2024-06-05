@@ -6,8 +6,13 @@ import {  academicDepartmentValidationSchemas } from './academicDepartment.zod.v
 const router = express.Router();
 
 
-router.post('/create-academic-department',validateRequest(academicDepartmentValidationSchemas.createAcademicDepartmentSchema), academicController.createAcademicDepartment)
+router.post('/create-academic-department', validateRequest(academicDepartmentValidationSchemas.createAcademicDepartmentSchema), academicController.createAcademicDepartment)
+
 router.get('/', academicController.getAllAcademicDepartments)
 router.get('/:departmentId', academicController.getSingleAcademicDepartment)
 router.patch('/:departmentId', academicController.deleteAcademicDepartment)
-router.patch('/:departmentId', academicController.updateAcademicDepartment)
+router.patch('/:departmentId', academicController.updateAcademicDepartment);
+
+
+
+export const AcademicDepartmentRoute = router;

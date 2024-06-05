@@ -23,4 +23,4 @@ router.patch(
 );
 
 
-export const AcademicFacultyRoute = router;
+export const StudentRoutes = router;
