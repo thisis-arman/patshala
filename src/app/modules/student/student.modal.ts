@@ -86,7 +86,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<TStudent,StudentModel>(
+const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: {
       type: String,
@@ -141,7 +141,16 @@ const studentSchema = new Schema<TStudent,StudentModel>(
     },
     guardian: guardianSchema,
     localGuardian: localGuardianSchema,
-    admissionSemester:Schema.Types.ObjectId,
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      required:true,
+      ref: "AcademicSemester",
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "AcademicDepartment",
+    },
     profileImg: {
       type: String,
     },
