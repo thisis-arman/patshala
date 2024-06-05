@@ -26,4 +26,12 @@ process.on('unhandledRejection', () => {
      }
     )
   }
+  process.exit(1)
+})
+
+
+//unCaughTException
+
+process.on('uncaughtException', () => {
+  process.exit(1)
 })
