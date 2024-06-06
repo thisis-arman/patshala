@@ -1,10 +1,9 @@
-import { AcademicSemesterRoute } from './app/modules/academicSemester/academicSemester.route';
+
 import express, { Application } from 'express'
-import { UserRoutes } from './app/modules/user/user.route'
 import cors from 'cors'
 const app: Application = express()
 import bodyParser from 'body-parser'
-import { globalErrorHandler } from './app/middlewares/globalErrorHandler'
+import globalErrorHandler, {  } from './app/middlewares/globalErrorHandler'
 import { notFound } from './app/middlewares/notFound'
 import router from './app/route'
 const port = 3000

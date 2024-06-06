@@ -2,45 +2,39 @@ import { TAcademicSemester } from "../academicSemester/academicSemester.interfac
 import { User } from "./user.modal";
 
 const findLastStudentId = async () => {
-  const lastStudent = await User.findOne(
-    {
-      role: "student",
-    },
-    {
-      id: 1,
-      _id: 0,
-    }
-  )
-    .sort({
-      createdAt: -1,
-    })
+  const lastStudent = await User.findOne({ role: "student" }, { id: 1, _id: 0 })
+    .sort({ createdAt: -1 })
     .lean();
 
-  //203001   0001
-  return lastStudent?.id ? lastStudent.id.substring(6) : undefined;
+  return lastStudent?.id ? lastStudent.id : undefined;
 };
 
 export const generateStudentId = async (payload: TAcademicSemester) => {
-  const currentId = (0).toString(); //0000
-
   const lastStudentId = await findLastStudentId();
-
-  const lastStudentSemesterCode = lastStudentId?.substring(4, 6);
-  const lastStudentSemesterYear = Number(lastStudentId?.substring(0, 4));
 
   const currentSemesterYear = payload.year;
   const currentSemesterCode = payload.code;
 
-  if (
-    lastStudentId &&
-    lastStudentSemesterYear === currentSemesterYear &&
-    lastStudentSemesterCode === currentSemesterCode
-  ) {
-    lastStudentId.substring(6);
+  let currentId = "0000";
+
+  if (lastStudentId) {
+    const lastStudentYear = Number(lastStudentId.substring(0, 4));
+    const lastStudentCode = lastStudentId.substring(4, 6);
+    const lastStudentNumber = lastStudentId.substring(6);
+
+    if (
+      lastStudentYear === currentSemesterYear &&
+      lastStudentCode === currentSemesterCode
+    ) {
+      currentId = (Number(lastStudentNumber) + 1).toString().padStart(4, "0");
+    } else {
+      currentId = "0001";
+    }
+  } else {
+    currentId = "0001";
   }
 
-  let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
-  incrementId = `${payload.year}${payload.code}${incrementId}`;
+  const newStudentId = `${currentSemesterYear}${currentSemesterCode}${currentId}`;
 
-  return incrementId;
+  return newStudentId;
 };

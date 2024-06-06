@@ -5,6 +5,7 @@ import { handleZodError } from "../errors/handleZodError";
 import { TErrorSources } from "../interface/error";
 import { ErrorRequestHandler } from "express";
 import config from "../config";
+import handleCastError from "../errors/handleCastError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //setting default values

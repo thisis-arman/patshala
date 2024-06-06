@@ -6,16 +6,33 @@ import { User } from "../user/user.modal";
 import { populate } from "dotenv";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+
+  const searchableFields = ["email", "name.firstName", "presentAddress"];
+
+
+  const queryObj = {
+    ...query,
+  }
   let searchTerm = "";
   if (query.searchTerm) {
     searchTerm = query.searchTerm as string;
   }
-// Searching on 
-  const result = await Student.find({
-    $or: ["email", "name.firstName", "presentAddress"].map((field) => ({
+
+
+
+  // const searchQuery = 
+const searchQuery =Student.find({
+    $or: searchableFields.map((field) => ({
       [field]: { $regex: searchTerm, $options: "i" },
     })),
   })
+
+
+  const excludeFields = ['searchTerm','sort','limit']
+  excludeFields.forEach((el) => delete queryObj[el])
+  
+// Searching on 
+  const filterQuery =  searchQuery.find(queryObj)
     .populate("admissionSemester")
     .populate({
       path: "academicDepartment",
@@ -23,7 +40,26 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
         path: "academicFaculty",
       },
     });
-  return result;
+  
+  
+  
+  let sort = '-createdAt';
+  if (query.sort) {
+    sort= query.sort as string;
+  }
+
+  const sortQuery =  filterQuery.sort(sort);
+
+  let limit = 4;
+
+  if (query.limit) { 
+    limit = query.limit as number;
+  }
+
+
+  const  limitQuery = await sortQuery.limit(limit)
+
+  return limitQuery;
 };
 
 const getSingleStudentFromDB = async (_id: string) => {

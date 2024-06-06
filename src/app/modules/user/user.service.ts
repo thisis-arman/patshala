@@ -8,21 +8,22 @@ import { User } from "./user.modal";
 import { generateStudentId } from "./user.utils";
 import httpStatus from "http-status";
 
+
+
 const createStudentInfoDB = async (password: string, payload: TStudent) => {
   let userData: Partial<TUser> = {};
 
-  (userData.role = "student"),
-    (userData.password = password || (config.default_password as string));
-
-  // userData.id = "203010000110";
+  userData.role = "student";
+  userData.password = password || (config.default_password as string);
   userData.status = "in-progress";
 
-  // find academic semester info
+  // Find academic semester info
   const admissionSemester = await AcademicSemester.findById(
     payload.admissionSemester
   );
-
-  //set  generated id
+  if (!admissionSemester) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Admission semester not found");
+  }
 
   const session = await mongoose.startSession();
 
@@ -42,17 +43,19 @@ const createStudentInfoDB = async (password: string, payload: TStudent) => {
     const newStudent = await Student.create([payload], { session });
 
     if (!newStudent.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, "Failed to create Student");
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to create student");
     }
-    session.commitTransaction();
+
+    await session.commitTransaction();
     session.endSession();
     return newStudent;
   } catch (error) {
     await session.abortTransaction();
-    await session.endSession();
+    session.endSession();
+    throw error; // Ensure the error is rethrown or handled appropriately
   }
-  //   return newUser;
 };
+
 
 export const UserServices = {
   createStudentInfoDB,
