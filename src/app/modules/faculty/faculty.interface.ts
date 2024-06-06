@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Model, Types } from "mongoose";
 
 
 export type TGender = "male" | "female" | "other";
@@ -38,6 +38,6 @@ export type TFaculty = {
 
 export default TFaculty;
 
-export const FacultyModel (){
-    isUserEx
-} 
+export interface FacultyModel extends Model<TFaculty>{
+    isUserExists(id:string):Promise<TFaculty|null> 
+}
