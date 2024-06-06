@@ -53,9 +53,17 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     skip = (page - 1) * limit;
   }
 
-  const paginateQuery = await sortQuery.skip(skip);
+  const paginateQuery =  sortQuery.skip(skip);
 
-  return paginateQuery;
+  let fields = '-__v'
+  
+
+  if (query.fields) {
+    fields=(query.fields as string).split(',').join(' ')
+  }
+
+  const fieldFiltering = await paginateQuery.select(fields)
+  return fieldFiltering;
 };
 
 const getSingleStudentFromDB = async (_id: string) => {
