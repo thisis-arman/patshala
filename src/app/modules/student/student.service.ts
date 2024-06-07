@@ -4,6 +4,7 @@ import { Student } from "./student.modal";
 import httpStatus from "http-status";
 import { User } from "../user/user.modal";
 import { populate } from "dotenv";
+import { AppError } from "../../errors/AppError";
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   const searchableFields = ["email", "name.firstName", "presentAddress"];

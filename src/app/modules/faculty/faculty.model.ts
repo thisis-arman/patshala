@@ -20,7 +20,6 @@ const userNameSchema = new Schema<TUserName>({
     maxlength: [20, "Name can not be more than 20 characters"],
   },
 });
-
 const facultySchema = new Schema<TFaculty, FacultyModel>(
   {
     id: {
@@ -56,7 +55,10 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
       required: [true, "Email is required"],
       unique: true,
     },
-    contactNo: { type: String, required: [true, "Contact number is required"] },
+    contactNo: {
+      type: String,
+      required: [true, "Contact number is required"],
+    },
     emergencyContactNo: {
       type: String,
       required: [true, "Emergency contact number is required"],
@@ -79,8 +81,8 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     profileImg: { type: String },
     academicDepartment: {
       type: Schema.Types.ObjectId,
-      required: [true, "User id is required"],
-      ref: "User",
+      required: [true, "Academic department id is required"],
+      ref: "AcademicDepartment",
     },
     isDeleted: {
       type: Boolean,
@@ -91,6 +93,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     toJSON: {
       virtuals: true,
     },
+    timestamps: true,
   }
 );
 

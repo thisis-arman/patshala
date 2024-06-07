@@ -39,35 +39,28 @@ export const generateStudentId = async (payload: TAcademicSemester) => {
   return newStudentId;
 };
 
+
 const findLastFacultyId = async () => {
-  const lastFaculty = await User.findOne(
-    {
-      role: "faculty",
-    },
-    {
-      id: 1,
-      _id: 0,
-    }
-  )
+  const lastFaculty = await User.findOne({ role: "faculty" }, { id: 1, _id: 0 })
     .sort({ createdAt: -1 })
     .lean();
 
+  console.log("Last Faculty ID: ", lastFaculty?.id);
   return lastFaculty?.id ? lastFaculty.id : undefined;
 };
 
 export const generateFacultyId = async () => {
-  let currentId = (0).toString();
+  let currentId = "0"; // Initialize currentId as a string "0"
   const lastFacultyId = await findLastFacultyId();
 
   if (lastFacultyId) {
-    currentId = lastFacultyId.substring(2);
+    currentId = lastFacultyId.substring(2); // Extract numeric part of the last ID (after "F-")
   }
 
-  let incrementId = Number(currentId + 1)
-    .toString()
-    .padStart(4, "0");
+  let incrementId = (Number(currentId) + 1).toString().padStart(4, "0"); // Increment and pad the ID
 
-  incrementId = `F-${incrementId}`;
+  incrementId = `F-${incrementId}`; // Prepend "F-"
 
+  console.log("Generated Faculty ID: ", incrementId);
   return incrementId;
 };
