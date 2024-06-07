@@ -1,14 +1,14 @@
-import { TBloodGroup, TGender } from "./faculty.interface";
-
-export const Gender: TGender[] = ["male", "female", "other"];
-
-export const BloodGroup: TBloodGroup[] = [
+export const Gender = ["male", "female", "other"] as const;
+export const BloodGroup = [
   "A+",
   "A-",
   "B+",
   "B-",
-  "AB+",
-  "AB-",
   "O+",
   "O-",
-];
+  "AB+",
+  "AB-",
+] as const;
+
+export type TGender = (typeof Gender)[number];
+export type TBloodGroup = (typeof BloodGroup)[number];

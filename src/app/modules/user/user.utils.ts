@@ -38,3 +38,19 @@ export const generateStudentId = async (payload: TAcademicSemester) => {
 
   return newStudentId;
 };
+
+const findLastFacultyId = async () => {
+  const lastFacultyId = await User.findOne(
+    {
+      role: "faculty",
+    },
+    {
+      id: 1,
+      _id: 0,
+    }
+  )
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return lastFacultyId?.id ? lastFacultyId.id : undefined;
+};
