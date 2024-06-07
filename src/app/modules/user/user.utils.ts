@@ -55,7 +55,7 @@ const findLastFacultyId = async () => {
   return lastFaculty?.id ? lastFaculty.id : undefined;
 };
 
-const generateFacultyId = async () => {
+export const generateFacultyId = async () => {
   let currentId = (0).toString();
   const lastFacultyId = await findLastFacultyId();
 

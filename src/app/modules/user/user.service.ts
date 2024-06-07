@@ -5,10 +5,11 @@ import { TStudent } from "../student/student.interface";
 import { Student } from "../student/student.modal";
 import { TUser } from "./user.interface";
 import { User } from "./user.modal";
-import { generateStudentId } from "./user.utils";
+import { generateFacultyId, generateStudentId } from "./user.utils";
 import httpStatus from "http-status";
-
-
+import TFaculty from "../faculty/faculty.interface";
+import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
+import { Faculty } from "../faculty/faculty.model";
 
 const createStudentInfoDB = async (password: string, payload: TStudent) => {
   let userData: Partial<TUser> = {};
@@ -56,6 +57,50 @@ const createStudentInfoDB = async (password: string, payload: TStudent) => {
   }
 };
 
+const createFacultyIntoD = async (password: string, payload: TFaculty) => {
+  let userData: Partial<TUser> = {};
+
+  userData.password = password || (config.default_password as string);
+  userData.role = "faculty";
+
+  const academicDepartment = await AcademicDepartment.findById(
+    payload.academicDepartment
+  );
+
+  if (!academicDepartment) {
+    throw new AppError(400, "Academic Department is not found");
+  }
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    userData.id = await generateFacultyId();
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, "failed to create user");
+    }
+
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id;
+
+    const newFaculty = await Faculty.create([payload], { session });
+    if (!newFaculty.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, "failed to create faculty");
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+    return newFaculty;
+  } catch (error:any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(error);
+  }
+};
 
 export const UserServices = {
   createStudentInfoDB,
