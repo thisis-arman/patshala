@@ -1,8 +1,10 @@
-import { bcrypt } from 'bcrypt';
+
 import httpStatus from "http-status";
 import { AppError } from "../../errors/AppError";
 import { User } from "../user/user.modal";
 import { TAuth } from "./auth.interface";
+import jwt from 'jsonwebtoken';
+import config from "../../config";
 
 const LoginUser = async (payload: TAuth) => {
 
@@ -45,5 +47,26 @@ const LoginUser = async (payload: TAuth) => {
          );
     }
 
+ 
+  
+  const jwtPayload = {
+    userId: user.id,
+    role: user.role
+  }
+  
+  // Create access token
+
+const accessToken=jwt.sign(
+    {
+     jwtPayload
+    },
+    config.jwt_access_token as string,
+    { expiresIn: "5d"}
+  );
+
+  return {
+    accessToken,
+    user.needsPasswordChange
+  }
 
 };
