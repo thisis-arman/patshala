@@ -6,3 +6,5 @@ export const AuthValidation = z.object({
     password: z.string(),
   }),
 });
+
+
