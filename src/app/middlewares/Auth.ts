@@ -9,7 +9,7 @@ import config from '../config';
 const Auth = () => {
   console.log("auth");
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // await schema.parseAsync({ body: req.body });
+ 
 
     const token = req.headers.authorization;
     console.log({ token });
@@ -25,8 +25,8 @@ const Auth = () => {
      
       req.user = decoded as JwtPayload;
 
+      next();
     });
-    next();
   });
 };
 
