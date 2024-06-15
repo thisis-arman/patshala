@@ -100,10 +100,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       unique: true,
       ref: "User",
     },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
     name: userNameSchema,
     gender: {
       type: String,
