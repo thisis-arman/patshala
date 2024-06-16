@@ -18,6 +18,9 @@ export const userSchema = new Schema<TUser, UserModel>(
       type: Boolean,
       default: true,
     },
+    passwordUpdatedAt: {
+      type:Date
+    },
     role: {
       type: String,
       enum: ["admin", "student", "faculty"],
