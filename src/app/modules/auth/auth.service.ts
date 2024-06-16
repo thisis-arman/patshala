@@ -48,7 +48,7 @@ const LoginUser = async (payload: TAuth) => {
   });
 
 
-  
+
 
   console.log({ accessToken });
   return {
@@ -57,6 +57,17 @@ const LoginUser = async (payload: TAuth) => {
   };
 };
 
+
+const changePassword = async (user: { userId: string, role: string }, payload) => {
+  
+  const result = await User.findOneAndUpdate({ id: user.userId, role: user.role }, {
+    payload
+  })
+  
+  
+}
+
 export const AuthServices = {
   LoginUser,
+  changePassword
 };

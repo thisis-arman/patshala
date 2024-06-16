@@ -29,7 +29,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
   // Searching on
   const filterQuery = searchQuery
-    .find(queryObj)
+    .find(queryObj).populate('user')
     .populate("admissionSemester")
     .populate({
       path: "academicDepartment",

@@ -6,7 +6,7 @@ import { AppError } from "../errors/AppError";
 import httpStatus from "http-status";
 import config from '../config';
 
-const Auth = () => {
+const Auth = (...requiredRoles :string[]) => {
   console.log("auth");
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
  
@@ -19,10 +19,22 @@ const Auth = () => {
     }
 
     jwt.verify(token, config.jwt_access_token as string, function (err, decoded) {
+      console.log({decoded});
       if (err) {
           throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized User");
       }
      
+
+      const role = (decoded as JwtPayload).role;
+
+
+      if (requiredRoles && !requiredRoles.includes(role)) {
+         throw new AppError(
+           httpStatus.UNAUTHORIZED,
+           "You are not authorized User"
+         );
+      }
+
       req.user = decoded as JwtPayload;
 
       next();
