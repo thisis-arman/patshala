@@ -1,10 +1,11 @@
-import { bcrypt } from "bcrypt";
+import bcrypt from "bcrypt";
 import httpStatus from "http-status";
 import { AppError } from "../../errors/AppError";
 import { User } from "../user/user.modal";
 import { TAuth } from "./auth.interface";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
+import { createToken } from "./auth.utils";
 
 const LoginUser = async (payload: TAuth) => {
   const user = await User.isUserExistsByCustomId(payload.id);
@@ -43,23 +44,36 @@ const LoginUser = async (payload: TAuth) => {
 
   // Create access token
 
-  const accessToken = jwt.sign(jwtPayload, config.jwt_access_token as string, {
-    expiresIn: "5d",
-  });
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_token as string,
+    config.jwt_access_token_expires_in as string,
+  );
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_token as string,
+    config.jwt_refresh_token_expires_in as string,
+  );
 
+ 
   console.log({ accessToken });
   return {
     accessToken,
+    refreshToken,
     needsPasswordChange: user.needsPasswordChange,
   };
 };
 
+// !  change password Service
+
 const changePassword = async (
-  userData: { userId: string; role: string },
-  payload
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string }
 ) => {
+  console.log({ userData });
   const user = await User.isUserExistsByCustomId(userData.userId);
 
+  console.log({ user });
   if (!user) {
     throw new AppError(
       httpStatus.NOT_FOUND,
@@ -78,20 +92,30 @@ const changePassword = async (
   }
 
   const isPasswordMatched = await User.isPasswordMatched(
-    payload.password,
+    payload.oldPassword,
     user.password
   );
   if (!isPasswordMatched) {
     throw new AppError(httpStatus.BAD_REQUEST, `Password does not match`);
   }
 
-  const newHashedPassword = bcrypt.hash(
+  if (
+    user.passwordUpdatedAt &&
+    User.isJWTIssuedBeforePasswordChanged(
+      user.passwordUpdatedAt,
+      userData.iat as number
+    )
+  ) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized !");
+  }
+
+  const newHashedPassword = await bcrypt.hash(
     payload.newPassword,
     Number(config.bcrypt_salt_rounds)
   );
 
   await User.findOneAndUpdate(
-    { id: userData.userId, role: userData.role },
+    { id: user.id, role: user.role },
     {
       password: newHashedPassword,
       needsPasswordChange: false,

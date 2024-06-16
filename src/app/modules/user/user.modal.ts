@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import { TUser, UserModel } from "./user.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
+import { number } from "zod";
 
 export const userSchema = new Schema<TUser, UserModel>(
   {
@@ -60,10 +61,25 @@ userSchema.statics.isUserExistsByCustomId = async function (id: string) {
   return await User.findOne({ id }).select('+password');
 };
 
+
 userSchema.statics.isPasswordMatched = async function (
   plainPassword,
   hashedPassword
 ) {
   return await bcrypt.compare(plainPassword, hashedPassword);
 };
+
+
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+  passwordChangedTimestamp: Date,
+  jwtIssuedTimestamp: number
+) {
+  const passwordChangedTime =
+    new Date(passwordChangedTimestamp).getTime() / 1000;
+  return passwordChangedTime > jwtIssuedTimestamp;
+};
+
+
+
 export const User = model<TUser, UserModel>("User", userSchema);
