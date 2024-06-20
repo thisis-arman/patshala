@@ -9,7 +9,7 @@ import { AuthValidations } from './auth.validation';
 const router = express.Router();
 
 
-router.post('/login',Auth(USER_ROLE.admin),validateRequest(AuthValidations.AuthValidation),AuthController.loginUser)
+router.post('/login',validateRequest(AuthValidations.AuthValidation),AuthController.loginUser)
 
 router.post(
   "/change-password",
