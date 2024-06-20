@@ -20,7 +20,7 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     return courses;
 };
 
-export const CourseService = {
+export const CourseServices = {
     createCourseIntoDB,
     getAllCoursesFromDB
 };
