@@ -12,6 +12,8 @@ router.post(
   CourseControllers.createCourse
 );
 
+router.get("/", CourseControllers.getAllCourses);
+
 router.get(
   "/:id",
   Auth("student", "faculty", "admin"),

@@ -19,7 +19,9 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  return courses;
+  const result = await courses.modelQuery;
+
+  return result;
 };
 
 const getSingleCourseFromDB = async (id: string) => {
@@ -126,7 +128,6 @@ const deleteCourseFromDB = async (id: string) => {
   return result;
 };
 
-
 const assignFacultiesWithCourseIntoDB = async (
   id: string,
   payload: Partial<TCourseFaculty>
@@ -144,7 +145,6 @@ const assignFacultiesWithCourseIntoDB = async (
   );
   return result;
 };
-
 
 const removeFacultiesFromCourseFromDB = async (
   id: string,
