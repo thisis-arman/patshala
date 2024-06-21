@@ -4,11 +4,14 @@ import EnrolledCourse from "./enrolledCourse.model";
 import { OfferedCourse } from "../offeredCourse/offeredCourse.model";
 import { AppError } from "../../errors/AppError";
 import httpStatus from "http-status";
+import { Student } from "../student/student.modal";
+import mongoose from "mongoose";
 
 const createEnrolledCourseIntoDB = async (
   user: JwtPayload,
   payload: TEnrolledCourse
 ) => {
+  const { offeredCourse } = payload;
   /* 
     1.check if the offered course is exists
     2.check if the student already enrolled in the course
@@ -26,11 +29,21 @@ const createEnrolledCourseIntoDB = async (
     );
   }
 
+  const student = await Student.findOne({ id: user.userId });
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND, "Student does not exist");
+  }
+
   const isStudentAlreadyEnrolled = await EnrolledCourse.findOne({
     semesterRegistration: isOfferedCourseExists?.semesterRegistration,
-    ,
-
+    offeredCourse,
+    student: student.id,
   });
+
+  if (isOfferedCourseExists.maxCapacity <= 0) {
+    throw new AppError(httpStatus.BAD_GATEWAY,"No More seats available")
+  }
+
   if (isStudentAlreadyEnrolled) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -38,10 +51,34 @@ const createEnrolledCourseIntoDB = async (
     );
   }
 
+  const session = await mongoose.startSession();
 
 
-  const result = await EnrolledCourse.create(payload);
+  try {
+
+     session.startTransaction();
+    
+  const result = await EnrolledCourse.create(
+    [
+      {
+        semesterRegistration: isOfferedCourseExists.semesterRegistration,
+        academicSemester: isOfferedCourseExists.academicSemester,
+        academicFaculty: isOfferedCourseExists.academicFaculty,
+        academicDepartment: isOfferedCourseExists.academicDepartment,
+        offeredCourse: offeredCourse,
+        course: isOfferedCourseExists.course,
+        student: student._id,
+        faculty: isOfferedCourseExists.faculty,
+        isEnrolled: true,
+      },
+    ],
+    {session}
+    );
+    
   return result;
+  } catch (error) {
+    
+  }
 };
 
 export const EnrolledCourseServices = {
