@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import QueryBuilder from "../../builder/queryBuilder";
 import { CourseSearchableFields } from "./course.constant";
 import { TCourse, TCourseFaculty } from "./course.interface";
-import { Course } from "./course.model";
+import { Course, CourseFaculty } from "./course.model";
 import { AppError } from "../../errors/AppError";
 import mongoose from "mongoose";
 
@@ -164,6 +164,7 @@ const removeFacultiesFromCourseFromDB = async (
   );
   return result;
 };
+
 
 export const CourseServices = {
     createCourseIntoDB,
