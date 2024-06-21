@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { Days } from "./OfferedCourse.constant";
+import { Days } from "./offeredCourse.constant";
+
 
 const timeStringSchema = z.string().refine(
   (time) => {
