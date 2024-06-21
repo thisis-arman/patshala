@@ -8,7 +8,7 @@ import { Faculty } from "../faculty/faculty.model";
 import { OfferedCourse } from "./offeredCourse.model";
 import QueryBuilder from "../../builder/queryBuilder";
 import { hasTimeConflict } from "./offeredCourse.utils";
-
+import { SemesterRegistration } from "../semesterRegistration.ts/semesterRegistration.model";
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -37,7 +37,7 @@ const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
    */
 
   //check if the semester registration id is exists!
-  const isSemesterRegistrationExits = await semesterRegistration.findById(
+  const isSemesterRegistrationExits = await SemesterRegistration.findById(
     semesterRegistration
   );
 
