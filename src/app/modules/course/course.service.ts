@@ -17,13 +17,10 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     .filter()
     .sort()
     .paginate()
-        .fields();
-    
-    
-    return courses;
+    .fields();
+
+  return courses;
 };
-
-
 
 const getSingleCourseFromDB = async (id: string) => {
   const result = await Course.findById(id).populate(
@@ -130,7 +127,6 @@ const deleteCourseFromDB = async (id: string) => {
 };
 
 
-// TODO : create course faculty 
 const assignFacultiesWithCourseIntoDB = async (
   id: string,
   payload: Partial<TCourseFaculty>
@@ -149,6 +145,7 @@ const assignFacultiesWithCourseIntoDB = async (
   return result;
 };
 
+
 const removeFacultiesFromCourseFromDB = async (
   id: string,
   payload: Partial<TCourseFaculty>
@@ -165,9 +162,8 @@ const removeFacultiesFromCourseFromDB = async (
   return result;
 };
 
-
 export const CourseServices = {
-    createCourseIntoDB,
+  createCourseIntoDB,
   getAllCoursesFromDB,
   removeFacultiesFromCourseFromDB,
   getSingleCourseFromDB,
