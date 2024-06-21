@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { Grade } from "./enrolledCourse.constant";
 import {
   TEnrolledCourse,
   TEnrolledCourseMarks,
 } from "./enrolledCourse.interface";
+import { Grade } from "./enrolledCourse.constant";
 
 const courseMarksSchema = new Schema<TEnrolledCourseMarks>(
   {
