@@ -12,6 +12,8 @@ const getAcademicFacultiesFromDB = async () => {
     const result = await AcademicFaculty.find({});
     return result;
 }
+
+
 const getSingleAcademicFacultyFromDB = async (_id:string) => {
     const result = await AcademicFaculty.findOne({_id});
     return result;

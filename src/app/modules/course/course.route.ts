@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.post(
   "/create-course",
-  Auth("admin"),
   validateRequest(CourseValidations.createCourseValidationSchema),
   CourseControllers.createCourse
 );
@@ -21,7 +20,6 @@ router.get(
 
 router.patch(
   "/:id",
-  Auth("admin"),
   validateRequest(CourseValidations.updateCourseValidationSchema),
   CourseControllers.updateCourse
 );

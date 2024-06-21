@@ -13,9 +13,10 @@ router.post(
   academicFacultyController.createAcademicFaculty
 );
 
-router.get("/:facultyId", academicFacultyController.getSingleAcademicFaculty);
-router.patch("/:facultyId", academicFacultyController.updateAcademicFaculty);
-router.patch("/:facultyId", academicFacultyController.deleteAcademicFaculty);
+router.get("/", academicFacultyController.getAcademicFaculties);
+router.get("/:id", academicFacultyController.getSingleAcademicFaculty);
+router.patch("/:id", academicFacultyController.updateAcademicFaculty);
+router.patch("/:id", academicFacultyController.deleteAcademicFaculty);
 
 
 export const AcademicFacultyRoute = router;

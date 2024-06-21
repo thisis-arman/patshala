@@ -9,9 +9,9 @@ const router = express.Router();
 router.post('/create-academic-department', validateRequest(academicDepartmentValidationSchemas.createAcademicDepartmentSchema), academicController.createAcademicDepartment)
 
 router.get('/', academicController.getAllAcademicDepartments)
-router.get('/:departmentId', academicController.getSingleAcademicDepartment)
-router.patch('/:departmentId', academicController.deleteAcademicDepartment)
-router.patch('/:departmentId', academicController.updateAcademicDepartment);
+router.get('/:id', academicController.getSingleAcademicDepartment)
+router.patch('/:id', academicController.deleteAcademicDepartment)
+router.patch('/:id', academicController.updateAcademicDepartment);
 
 
 
